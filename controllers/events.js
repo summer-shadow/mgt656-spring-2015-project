@@ -75,6 +75,16 @@ function saveEvent(request, response){
     contextData.errors.push('Your title should be between 5 and 100 letters.');
   }
   
+   if (validator.isURL(request.body.image) === false) {
+    contextData.errors.push('Your image must be a URL');
+  } 
+  
+  if (validator.contains(request.body.image, '.png') === false) {
+    if (validator.contains(request.body.image, '.gif') === false) {
+      contextData.errors.push('Your image URL should end in .png or .gif');
+    }
+  }
+  
  var year = checkIntrange(request, 'year', 2015, 2016, contextData);
 
   if (contextData.errors.length === 0) {
@@ -92,15 +102,6 @@ function saveEvent(request, response){
     response.render('create-event.html', contextData);
   }
   
-  if (validator.isURL(request.body.image) === false) {
-    contextData.errors.push('Your image must be a URL');
-  } 
-  
-  if (validator.contains(request.body.image, '.png') === false) {
-    if (validator.contains(request.body.image, '.gif') === false) {
-      contextData.errors.push('Your image URL should end in .png or .gif');
-    }
-  }
 }
 
 function eventDetail (request, response) {
@@ -122,10 +123,8 @@ function rsvp (request, response){
      ev.attending.push(request.body.email);
      response.redirect('/events/' + ev.id);
   }else{
-    console.log("inside false");
     var contextData = {errors: [], event: ev};
     contextData.errors.push('Invalid email');
-    console.log("before rendering");
     response.render('event-detail.html', contextData);    
   }
 
