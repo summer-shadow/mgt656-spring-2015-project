@@ -83,12 +83,23 @@ function saveEvent(request, response){
       location: request.body.location,
       image: request.body.image,
       date: new Date(),
-      attending: []
+      attending: [],
+      id: events.all.length
     };
     events.all.push(newEvent);
     response.redirect('/events');
   }else{
     response.render('create-event.html', contextData);
+  }
+  
+  if (validator.isURL(request.body.image) === false) {
+    contextData.errors.push('Your image must be a URL');
+  } 
+  
+  if (validator.contains(request.body.image, '.png') === false) {
+    if (validator.contains(request.body.image, '.gif') === false) {
+      contextData.errors.push('Your image URL should end in .png or .gif');
+    }
   }
 }
 
