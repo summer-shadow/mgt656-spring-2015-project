@@ -99,7 +99,6 @@ if(request.body.image.includes('.gif') == false) {
 
   if (contextData.errors.length === 0) {
     var newEvent = {
-      id: events.all.length, 
       title: request.body.title,
       location: request.body.location,
       image: request.body.image,
